@@ -31,38 +31,3 @@ impl<T: FromStr + MayRegistryArgFromStr + Send + Sync> RegistryArg for T where T
 
 impl MayRegistryArgFromStr for usize {
 }
-
-//pub type OneIntArgs = OneFromStrArgs<i64>;
-//pub type OneUsizeArgs = OneFromStrArgs<usize>;
-//
-//pub enum TwoStringArgs {
-//}
-//
-//impl RegistryArgs for TwoStringArgs {
-//    type Val = (Arc<str>, Arc<str>);
-//
-//    fn argct() -> usize {
-//        return 2;
-//    }
-//
-//    fn parse(args: &[&str]) -> ValidationResult<(Arc<str>, Arc<str>)> {
-//        assert_eq!(2, args.len());
-//        return Result::Ok((Arc::from(&*args[0]), Arc::from(&*args[1])));
-//    }
-//}
-//
-//pub enum ThreeStringArgs {
-//}
-//
-//impl RegistryArgs for ThreeStringArgs {
-//    type Val = (Arc<str>, Arc<str>, Arc<str>);
-//
-//    fn argct() -> usize {
-//        return 3;
-//    }
-//
-//    fn parse(args: &[&str]) -> ValidationResult<(Arc<str>, Arc<str>, Arc<str>)> {
-//        assert_eq!(3, args.len());
-//        return Result::Ok((Arc::from(&*args[0]), Arc::from(&*args[1]), Arc::from(&*args[2])));
-//    }
-//}
