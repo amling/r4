@@ -2,7 +2,6 @@ extern crate stream;
 extern crate wns;
 
 use std::collections::VecDeque;
-use std::sync::Arc;
 use stream::Entry;
 use stream::Stream;
 use stream::StreamTrait;
@@ -22,7 +21,7 @@ struct BgopState {
 }
 
 pub struct BgopRbe {
-    state: Arc<WaitNotifyState<BgopState>>,
+    state: WaitNotifyState<BgopState>,
 }
 
 impl BgopRbe {
@@ -47,7 +46,7 @@ impl BgopRbe {
 }
 
 pub struct BgopWbe {
-    state: Arc<WaitNotifyState<BgopState>>,
+    state: WaitNotifyState<BgopState>,
 }
 
 impl BgopWbe {
@@ -72,7 +71,7 @@ impl BgopWbe {
 }
 
 pub struct BgopFe {
-    state: Arc<WaitNotifyState<BgopState>>,
+    state: WaitNotifyState<BgopState>,
 }
 
 impl BgopFe {
@@ -144,7 +143,7 @@ impl StreamTrait for BgopFe {
 }
 
 pub fn new() -> (Stream, BgopRbe, BgopWbe) {
-    let state = Arc::new(WaitNotifyState::new(BgopState::default()));
+    let state = WaitNotifyState::new(BgopState::default());
 
     let fe = BgopFe {
         state: state.clone(),
