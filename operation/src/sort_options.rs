@@ -1,5 +1,5 @@
+use opts::help::ToOptionsHelp;
 use opts::parser::OptionsPile;
-use opts::parser::ToOptionsHelp;
 use opts::vals::UnvalidatedOption;
 use record::Record;
 use sorts::BoxedSort;

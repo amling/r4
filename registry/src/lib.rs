@@ -6,8 +6,8 @@ extern crate validates;
 
 pub mod args;
 
+use opts::help::ToOptionsHelp;
 use opts::parser::OptionsPile;
-use opts::parser::ToOptionsHelp;
 use registry_args::RegistryArgs;
 use std::collections::HashMap;
 use std::sync::Arc;
