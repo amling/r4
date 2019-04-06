@@ -56,7 +56,7 @@ impl<T: Eq> NameTrie<T> {
         return acc;
     }
 
-    fn collect<'a, 'b: 'a>(&'b self, acc: &'a mut NameTrieResult<'b, T>) -> bool {
+    fn collect<'a>(&'a self, acc: &mut NameTrieResult<'a, T>) -> bool {
         if let Some((ref name, ref t)) = self.own {
             if acc.add(name, t) {
                 return true;
