@@ -40,7 +40,7 @@ impl<T> RecordNode<T> {
     }
 }
 
-pub trait RecordTrait: std::marker::Sized {
+pub trait RecordTrait: Sized {
     fn new(n: RecordNode<Self>) -> Self;
 
     fn null() -> Self {
