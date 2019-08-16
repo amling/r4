@@ -61,6 +61,7 @@ registry! {
     from_regex,
     from_split,
     grep,
+    head,
     help,
     join,
     multiplex,
