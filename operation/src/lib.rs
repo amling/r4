@@ -69,6 +69,7 @@ registry! {
     provenance,
     shell,
     sort,
+    tail,
     to_ptable,
     to_table,
     wrap_lines,
