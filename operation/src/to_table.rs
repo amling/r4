@@ -95,7 +95,7 @@ impl OperationBe2 for ImplBe2 {
     }
 }
 
-pub fn dump_table(rows: &Vec<Vec<(String, char)>>, w: &mut FnMut(Entry) -> bool) -> bool {
+pub fn dump_table(rows: &Vec<Vec<(String, char)>>, w: &mut dyn FnMut(Entry) -> bool) -> bool {
     let mut widths = Vec::new();
 
     for row in rows {

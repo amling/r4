@@ -44,7 +44,7 @@ use validates::Validates;
 use validates::ValidationError;
 use validates::ValidationResult;
 
-pub type BoxedOperation = Box<OperationInbox>;
+pub type BoxedOperation = Box<dyn OperationInbox>;
 
 registry! {
     BoxedOperation,
@@ -76,7 +76,7 @@ registry! {
     xform,
 }
 
-pub struct StreamWrapper(Box<Fn() -> Stream + Send + Sync>);
+pub struct StreamWrapper(Box<dyn Fn() -> Stream + Send + Sync>);
 
 impl StreamWrapper {
     pub fn new<F: Fn() -> Stream + Send + Sync + 'static>(f: F) -> Self {

@@ -24,7 +24,7 @@ impl ClumperBe for ImplBe {
         return "bucket records rotating between a specified number of buckets";
     }
 
-    fn stream(a: &Args, bsw: Box<Fn(Vec<(Arc<str>, Record)>) -> Stream>) -> Stream {
+    fn stream(a: &Args, bsw: Box<dyn Fn(Vec<(Arc<str>, Record)>) -> Stream>) -> Stream {
         let n = a.count;
         let substreams: Vec<_> = (0..n).map(|_| bsw(vec![])).collect();
 

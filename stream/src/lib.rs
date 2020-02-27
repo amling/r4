@@ -26,18 +26,18 @@ impl Entry {
 }
 
 pub trait StreamTrait {
-    fn write(&mut self, r: Entry, w: &mut FnMut(Entry) -> bool) -> bool;
-    fn close(self: Box<Self>, w: &mut FnMut(Entry) -> bool);
+    fn write(&mut self, r: Entry, w: &mut dyn FnMut(Entry) -> bool) -> bool;
+    fn close(self: Box<Self>, w: &mut dyn FnMut(Entry) -> bool);
 }
 
-pub struct Stream(Box<StreamTrait>);
+pub struct Stream(Box<dyn StreamTrait>);
 
 impl Stream {
     pub fn new<F: StreamTrait + 'static>(f: F) -> Self {
         return Stream(Box::new(f));
     }
 
-    pub fn write(&mut self, e: Entry, w: &mut FnMut(Entry) -> bool) -> bool {
+    pub fn write(&mut self, e: Entry, w: &mut dyn FnMut(Entry) -> bool) -> bool {
         let mut ret = true;
         let ret2 = self.0.write(e, &mut |e| {
             ret &= w(e);
@@ -46,7 +46,7 @@ impl Stream {
         return ret && ret2;
     }
 
-    pub fn close(self, w: &mut FnMut(Entry) -> bool) {
+    pub fn close(self, w: &mut dyn FnMut(Entry) -> bool) {
         self.0.close(w);
     }
 }
@@ -111,24 +111,24 @@ pub fn transform_records<F: FnMut(Record) -> Record + 'static>(f: F) -> Stream {
     );
 }
 
-struct ClosuresStream<S, W: Fn(&mut S, Entry, &mut FnMut(Entry) -> bool) -> bool, C: Fn(S, &mut FnMut(Entry) -> bool)> {
+struct ClosuresStream<S, W: Fn(&mut S, Entry, &mut dyn FnMut(Entry) -> bool) -> bool, C: Fn(S, &mut dyn FnMut(Entry) -> bool)> {
     s: S,
     w: W,
     c: C,
 }
 
-impl<S, W: Fn(&mut S, Entry, &mut FnMut(Entry) -> bool) -> bool, C: Fn(S, &mut FnMut(Entry) -> bool)> StreamTrait for ClosuresStream<S, W, C> {
-    fn write(&mut self, e: Entry, w: &mut FnMut(Entry) -> bool) -> bool {
+impl<S, W: Fn(&mut S, Entry, &mut dyn FnMut(Entry) -> bool) -> bool, C: Fn(S, &mut dyn FnMut(Entry) -> bool)> StreamTrait for ClosuresStream<S, W, C> {
+    fn write(&mut self, e: Entry, w: &mut dyn FnMut(Entry) -> bool) -> bool {
         return (self.w)(&mut self.s, e, w);
     }
 
-    fn close(self: Box<Self>, w: &mut FnMut(Entry) -> bool) {
+    fn close(self: Box<Self>, w: &mut dyn FnMut(Entry) -> bool) {
         let s = *self;
         return (s.c)(s.s, w);
     }
 }
 
-pub fn closures<S: 'static, W: Fn(&mut S, Entry, &mut FnMut(Entry) -> bool) -> bool + 'static, C: Fn(S, &mut FnMut(Entry) -> bool) + 'static>(s: S, w: W, c: C) -> Stream {
+pub fn closures<S: 'static, W: Fn(&mut S, Entry, &mut dyn FnMut(Entry) -> bool) -> bool + 'static, C: Fn(S, &mut dyn FnMut(Entry) -> bool) + 'static>(s: S, w: W, c: C) -> Stream {
     return Stream::new(ClosuresStream {
         s: s,
         w: w,

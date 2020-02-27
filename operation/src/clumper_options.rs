@@ -31,7 +31,7 @@ impl Optionsable for ClumperOptions {
 
 impl ClumperOptionsValidated {
     pub fn stream<F: Fn(Vec<(Arc<str>, Record)>) -> Stream + 'static>(&self, f: F) -> Stream {
-        let mut bsw: Rc<Fn(Vec<(Arc<str>, Record)>) -> Stream> = Rc::new(f);
+        let mut bsw: Rc<dyn Fn(Vec<(Arc<str>, Record)>) -> Stream> = Rc::new(f);
 
         bsw = self.0.iter().rev().fold(bsw, |bsw, cw| {
             let cw = cw.clone();

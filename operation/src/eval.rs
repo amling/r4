@@ -113,7 +113,7 @@ impl<B: EvalBe + 'static> OperationBe2 for EvalBe2<B> {
     }
 
     fn stream(o: Arc<EvalOptionsValidated<B::I, B::O, B::R>>) -> Stream {
-        let f: Box<FnMut(Record) -> Record>;
+        let f: Box<dyn FnMut(Record) -> Record>;
         f = o.code.stream(o.ret);
 
         return stream::closures(

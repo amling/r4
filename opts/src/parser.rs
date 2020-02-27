@@ -8,8 +8,8 @@ use validates::Validates;
 use validates::ValidationError;
 use validates::ValidationResult;
 
-type CbMany<P> = PointerRc<Fn(&mut P, &[String]) -> ValidationResult<()>>;
-type CbOne<P> = PointerRc<Fn(&mut P, &str) -> ValidationResult<bool>>;
+type CbMany<P> = PointerRc<dyn Fn(&mut P, &[String]) -> ValidationResult<()>>;
+type CbOne<P> = PointerRc<dyn Fn(&mut P, &str) -> ValidationResult<bool>>;
 
 pub(crate) enum ExtraHandler<P> {
     Soft(CbOne<P>),

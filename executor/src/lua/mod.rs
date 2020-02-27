@@ -141,7 +141,7 @@ impl ExecutorBe for ImplBe {
         return Result::Ok(code.to_string());
     }
 
-    fn stream(code: &String, ret: bool) -> Box<FnMut(Record) -> Record> {
+    fn stream(code: &String, ret: bool) -> Box<dyn FnMut(Record) -> Record> {
         let lua = Lua::new();
 
         // Our library of functions to help manage API "issues".

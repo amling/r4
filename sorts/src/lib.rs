@@ -19,7 +19,7 @@ use std::cmp::Reverse;
 use std::rc::Rc;
 use std::sync::Arc;
 
-pub type BoxedSort = Box<SortInbox>;
+pub type BoxedSort = Box<dyn SortInbox>;
 
 registry! {
     BoxedSort,
@@ -33,11 +33,11 @@ pub trait SortBe {
 
     fn names() -> Vec<&'static str>;
     fn help_msg() -> &'static str;
-    fn new_bucket(a: &Self::Args, next: Rc<Fn() -> Box<SortBucket>>) -> Box<SortBucket>;
+    fn new_bucket(a: &Self::Args, next: Rc<dyn Fn() -> Box<dyn SortBucket>>) -> Box<dyn SortBucket>;
 }
 
 pub trait SortInbox: Send + Sync {
-    fn new_bucket(&self, next: Rc<Fn() -> Box<SortBucket>>) -> Box<SortBucket>;
+    fn new_bucket(&self, next: Rc<dyn Fn() -> Box<dyn SortBucket>>) -> Box<dyn SortBucket>;
     fn box_clone(&self) -> BoxedSort;
 }
 
@@ -52,7 +52,7 @@ struct SortInboxImpl<B: SortBe> {
 }
 
 impl<B: SortBe + 'static> SortInbox for SortInboxImpl<B> {
-    fn new_bucket(&self, next: Rc<Fn() -> Box<SortBucket>>) -> Box<SortBucket> {
+    fn new_bucket(&self, next: Rc<dyn Fn() -> Box<dyn SortBucket>>) -> Box<dyn SortBucket> {
         return B::new_bucket(&self.a, next);
     }
 
@@ -108,7 +108,7 @@ impl<B: SortSimpleBe> SortBe for SortBeFromSimple<B> {
         return B::help_msg();
     }
 
-    fn new_bucket(a: &OneKeyRegistryArgs, next: Rc<Fn() -> Box<SortBucket>>) -> Box<SortBucket> {
+    fn new_bucket(a: &OneKeyRegistryArgs, next: Rc<dyn Fn() -> Box<dyn SortBucket>>) -> Box<dyn SortBucket> {
         let key = a.key.clone();
         if key.starts_with('-') {
             return KeySortBucket::new(move |r, _i| Reverse(B::get(r.get_path(&key[1..]))), next);

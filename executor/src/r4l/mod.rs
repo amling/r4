@@ -212,7 +212,7 @@ impl ExecutorBe for ImplBe {
         return Result::Ok(Code(Arc::new(expr)));
     }
 
-    fn stream(code: &Code, ret: bool) -> Box<FnMut(Record) -> Record> {
+    fn stream(code: &Code, ret: bool) -> Box<dyn FnMut(Record) -> Record> {
         let e = code.0.clone();
         let mut st = State::default();
         return Box::new(move |r| {

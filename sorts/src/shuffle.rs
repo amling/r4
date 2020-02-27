@@ -74,7 +74,7 @@ impl SortBe for ImplBe {
         return "'sort' randomly";
     }
 
-    fn new_bucket(_a: &ZeroRegistryArgs, next: Rc<Fn() -> Box<SortBucket>>) -> Box<SortBucket> {
+    fn new_bucket(_a: &ZeroRegistryArgs, next: Rc<dyn Fn() -> Box<dyn SortBucket>>) -> Box<dyn SortBucket> {
         return KeySortBucket::new(|_r, i| RandomSortKey::new(i), next);
     }
 }

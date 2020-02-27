@@ -74,7 +74,7 @@ impl OperationBe2 for ImplBe2 {
         struct State(Record);
 
         impl State {
-            fn flush(&mut self, o: &OptionsValidated, w: &mut FnMut(Entry) -> bool) {
+            fn flush(&mut self, o: &OptionsValidated, w: &mut dyn FnMut(Entry) -> bool) {
                 if !self.0.expect_hash().is_empty() {
                     // We ignore the flow hint, but that's okay as the
                     // surrounding Stream will remember it and at worst we do

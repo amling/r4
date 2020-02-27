@@ -26,7 +26,7 @@ impl ClumperBe for ImplBe {
         return "'bucket' records by making a bucket for each [overlapping] window of a specified size";
     }
 
-    fn stream(a: &Args, bsw: Box<Fn(Vec<(Arc<str>, Record)>) -> Stream>) -> Stream {
+    fn stream(a: &Args, bsw: Box<dyn Fn(Vec<(Arc<str>, Record)>) -> Stream>) -> Stream {
         let size = a.count;
 
         return stream::closures(

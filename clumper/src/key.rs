@@ -22,7 +22,7 @@ impl ClumperBe for ImplBe {
         return "bucket records by values of one key";
     }
 
-    fn stream(a: &OneKeyRegistryArgs, bsw: Box<Fn(Vec<(Arc<str>, Record)>) -> Stream>) -> Stream {
+    fn stream(a: &OneKeyRegistryArgs, bsw: Box<dyn Fn(Vec<(Arc<str>, Record)>) -> Stream>) -> Stream {
         let k = a.key.clone();
 
         return stream::closures(

@@ -36,7 +36,7 @@ impl SortOptions {
 pub struct GenericSortBucket<T> {
     ts: HashMap<usize, T>,
     i: usize,
-    bucket: Box<SortBucket>,
+    bucket: Box<dyn SortBucket>,
 }
 
 impl<T> GenericSortBucket<T> {
@@ -72,7 +72,7 @@ impl<T> GenericSortBucket<T> {
 
 impl SortOptionsValidated {
     pub fn new_bucket<T>(&self) -> GenericSortBucket<T> {
-        let f: Rc<Fn() -> Box<SortBucket>> = Rc::new(VecDequeSortBucket::new);
+        let f: Rc<dyn Fn() -> Box<dyn SortBucket>> = Rc::new(VecDequeSortBucket::new);
 
         let f = self.0.iter().rev().fold(f, |f, sort| {
             let sort = sort.clone();

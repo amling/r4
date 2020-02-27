@@ -15,8 +15,8 @@ use registry::Registrant;
 use registry::args::ZeroRegistryArgs;
 use validates::ValidationResult;
 
-pub type BoxedExecutor = Box<ExecutorInbox>;
-pub type BoxedExecutor2 = Box<Executor2Inbox>;
+pub type BoxedExecutor = Box<dyn ExecutorInbox>;
+pub type BoxedExecutor2 = Box<dyn Executor2Inbox>;
 
 registry! {
     BoxedExecutor,
@@ -29,7 +29,7 @@ pub trait ExecutorInbox {
 }
 
 pub trait Executor2Inbox: Send + Sync {
-    fn stream(&self, ret: bool) -> Box<FnMut(Record) -> Record>;
+    fn stream(&self, ret: bool) -> Box<dyn FnMut(Record) -> Record>;
     fn box_clone(&self) -> BoxedExecutor2;
 }
 
@@ -45,7 +45,7 @@ pub trait ExecutorBe {
     fn names() -> Vec<&'static str>;
     fn help_msg() -> &'static str;
     fn parse(code: &str) -> ValidationResult<Self::Code>;
-    fn stream(code: &Self::Code, ret: bool) -> Box<FnMut(Record) -> Record>;
+    fn stream(code: &Self::Code, ret: bool) -> Box<dyn FnMut(Record) -> Record>;
 }
 
 pub struct ExecutorRegistrant<B: ExecutorBe> {
@@ -87,7 +87,7 @@ impl<B: ExecutorBe + 'static> ExecutorInbox for ExecutorInboxImpl<B> {
 }
 
 impl<B: ExecutorBe + 'static> Executor2Inbox for Executor2InboxImpl<B> {
-    fn stream(&self, ret: bool) -> Box<FnMut(Record) -> Record> {
+    fn stream(&self, ret: bool) -> Box<dyn FnMut(Record) -> Record> {
         return <B as ExecutorBe>::stream(&self.code, ret);
     }
 

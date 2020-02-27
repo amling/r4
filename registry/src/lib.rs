@@ -19,7 +19,7 @@ struct RegistrantData<R> {
     argct: usize,
     help_meta_suffix: &'static str,
     help_msg: &'static str,
-    init: Box<Fn(&[&str]) -> ValidationResult<R> + Send + Sync>,
+    init: Box<dyn Fn(&[&str]) -> ValidationResult<R> + Send + Sync>,
 }
 
 pub struct Registry<R> {

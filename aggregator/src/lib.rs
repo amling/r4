@@ -15,7 +15,7 @@ use registry::Registrant;
 use registry_args::RegistryArgs;
 use std::sync::Arc;
 
-pub type BoxedAggregator = Box<AggregatorInbox>;
+pub type BoxedAggregator = Box<dyn AggregatorInbox>;
 
 registry! {
     BoxedAggregator,

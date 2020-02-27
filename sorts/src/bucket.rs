@@ -33,8 +33,8 @@ pub trait SortBucket {
 
 pub struct KeySortBucket<T: Clone + Ord, F: Fn(Record, usize) -> T> {
     f: F,
-    next: Rc<Fn() -> Box<SortBucket>>,
-    map: BTreeMap<T, Box<SortBucket>>,
+    next: Rc<dyn Fn() -> Box<dyn SortBucket>>,
+    map: BTreeMap<T, Box<dyn SortBucket>>,
 }
 
 impl<T: Clone + Ord, F: Fn(Record, usize) -> T> SortBucket for KeySortBucket<T, F> {
@@ -69,7 +69,7 @@ impl<T: Clone + Ord, F: Fn(Record, usize) -> T> SortBucket for KeySortBucket<T, 
 }
 
 impl<T: Clone + Ord + 'static, F: Fn(Record, usize) -> T + 'static> KeySortBucket<T, F> {
-    pub fn new(f: F, next: Rc<Fn() -> Box<SortBucket>>) -> Box<SortBucket> {
+    pub fn new(f: F, next: Rc<dyn Fn() -> Box<dyn SortBucket>>) -> Box<dyn SortBucket> {
         return Box::new(KeySortBucket {
             f: f,
             next: next,
@@ -99,7 +99,7 @@ impl SortBucket for VecDequeSortBucket {
 }
 
 impl VecDequeSortBucket {
-    pub fn new() -> Box<SortBucket> {
+    pub fn new() -> Box<dyn SortBucket> {
         return Box::new(VecDequeSortBucket::default());
     }
 }

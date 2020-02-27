@@ -13,7 +13,7 @@ use registry::Registrant;
 use registry_args::RegistryArgs;
 use std::sync::Arc;
 
-pub type BoxedDeaggregator = Box<DeaggregatorInbox>;
+pub type BoxedDeaggregator = Box<dyn DeaggregatorInbox>;
 
 registry! {
     BoxedDeaggregator,
