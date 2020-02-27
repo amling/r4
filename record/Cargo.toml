@@ -5,4 +5,4 @@ authors = ["Keith Amling <me@amling2.org>"]
 
 [dependencies]
 misc = { path = "../misc" }
-serde_json = "1.0"
+serde_json = "=1.0"

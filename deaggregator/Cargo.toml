@@ -9,4 +9,4 @@ registry = { path = "../registry" }
 registry_args = { path = "../registry_args" }
 registry_args_derive = { path = "../registry_args_derive" }
 validates = { path = "../validates" }
-lazy_static = "1.2.0"
+lazy_static = "=1.2.0"
