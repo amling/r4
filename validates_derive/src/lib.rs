@@ -11,6 +11,7 @@ use syn::Data;
 use syn::DeriveInput;
 use syn::Fields;
 use syn::Ident;
+use syn::Index;
 use syn::Lit;
 use syn::LitStr;
 use syn::Meta;
@@ -54,6 +55,7 @@ pub fn derive_validates(input: TokenStream) -> TokenStream {
             Fields::Unnamed(d) => {
                 let ctor_fields: Vec<_> = d.unnamed.iter().enumerate().map(|(name, f)| {
                     let mangle = compute_mangle_expr(&f.attrs, format!("#{}", name));
+                    let name = Index::from(name);
                     return quote! {
                         ::validates::Validates::validate(self.#name) #mangle ?,
                     };
@@ -68,6 +70,7 @@ pub fn derive_validates(input: TokenStream) -> TokenStream {
                 }).collect();
                 struct_args = quote! { ( #( #struct_fields )* ); };
                 let clone_fields: Vec<_> = d.unnamed.iter().enumerate().map(|(name, _f)| {
+                    let name = Index::from(name);
                     return quote! {
                         ::std::clone::Clone::clone(&self.#name),
                     };
