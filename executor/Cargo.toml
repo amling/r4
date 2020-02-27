@@ -4,7 +4,7 @@ version = "1.0.0"
 authors = ["Keith Amling <me@amling2.org>"]
 
 [build-dependencies]
-lalrpop = "=0.16.2"
+lalrpop = "=0.17.2"
 
 [dependencies]
 misc = { path = "../misc" }
@@ -12,7 +12,7 @@ record = { path = "../record" }
 registry = { path = "../registry" }
 registry_args = { path = "../registry_args" }
 validates = { path = "../validates" }
-lalrpop-util = "=0.16.2"
+lalrpop-util = "=0.17.2"
 lazy_static = "=1.2.0"
 regex = "=1"
 rlua = "=0.15.3"
